@@ -1,4 +1,4 @@
-import requests 
+import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from time import sleep
@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from datetime import datetime
+
 
 def scrape(stop_in_page=None):
     options = webdriver.ChromeOptions()
@@ -25,10 +26,10 @@ def scrape(stop_in_page=None):
         #WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[3]/div/form/div[2]/div[2]/div[2]/div[1]/p[3]/span[2]")))
         sleep(2)
         html = driver.page_source
-        #if res.status_code == 200:
+        # if res.status_code == 200:
         soup = BeautifulSoup(html, 'html.parser')
         books_container = soup.find('div', {'id': 'result-list'})
-        if books_container: 
+        if books_container:
             for book in books_container.find_all('div', {'class': ['result-item', 'result-item-0', 'result-type-book']}):
                 book_link = ''
                 cover_link = ''
@@ -36,39 +37,40 @@ def scrape(stop_in_page=None):
                 price = ''
                 contributors = ''
                 a = book.find('a')
-                if a: 
+                if a:
                     book_link = 'https://www.springer.com'+a.get('href')
                     img_tag = a.find('img')
-                    if img_tag: 
+                    if img_tag:
                         cover_link = img_tag.get('data-original')
-                
+
                 title_tag = book.find('h4')
                 if title_tag:
                     title = title_tag.text.strip()
                 p_tags = book.find('span', {'class': 'price'})
                 if p_tags:
                     price = p_tags.text.strip()
-                contr_tag = book.find('p', {'class': ['meta', 'contributors', 'book-contributors']})
+                contr_tag = book.find(
+                    'p', {'class': ['meta', 'contributors', 'book-contributors']})
                 if contr_tag:
                     contributors = contr_tag.text.strip()
-                
+
                 df = df.append({
-                        'title':title,
-                        'author':contributors,
-                        'price': price,
-                        'book_link':book_link,
-                        'cover_link':cover_link,
-                        'website_source': 'https://www.springer.com/'
-                    }, ignore_index=True)
-        #else:
+                    'title': title,
+                    'author': contributors,
+                    'price': price,
+                    'book_link': book_link,
+                    'cover_link': cover_link,
+                    'website_source': 'https://www.springer.com/'
+                }, ignore_index=True)
+        # else:
             #print(f'Status code {res.status_code} on {url}')
-        
-        if stop_in_page: 
+
+        if stop_in_page:
             if page == stop_in_page:
                 break
-        page+=1
-        df.to_excel('springer.xlsx', index=False)
-    
+        page += 1
+        #df.to_excel('springer.xlsx', index=False)
+
     driver.close()
     return df
 
@@ -80,6 +82,6 @@ def go_springer(stop_at_page=7):
     springer = scrape(stop_at_page)
     springer['scrape_date'] = str(datetime.today().date())
     #springer.to_excel('springer.xlsx', index=False)
-    
+
     print('springer done successfully..')
     return springer
