@@ -60,14 +60,16 @@ def scrape(stop_in_page=None):
     return df
 
 
-if __name__ == '__main__':
+def go_ss(stop_at_page=40):
     # Specify what page number that you want to stop
     # You can set "None" to scrape all the pages
-    stop_in_page = 25
-    ss = scrape(stop_in_page)
+    #stop_in_page = 40
+    ss = scrape(stop_at_page)
     ss['website_source'] = 'https://www.simonandschuster.com/'
     ss['scrape_date'] = str(datetime.today().date())
-    ss.to_excel('simonandschuster.xslx', index=False)
+    print('SS done successfully..')
+    return ss
+    #ss.to_excel('simonandschuster.xslx', index=False)
 
 
 

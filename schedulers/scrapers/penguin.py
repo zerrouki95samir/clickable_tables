@@ -57,7 +57,9 @@ def get_price(book_link):
     
     return price
 
-def main(start, get_n):
+def go_penguin():
+    start = 0
+    get_n = 100
     penguin = pd.DataFrame()
     while True: 
         print(f'Getting from {start} --- {get_n} ... ')
@@ -66,18 +68,16 @@ def main(start, get_n):
         if len(sub_df) < get_n:
             break
         start += get_n
-    
-    
+        
     penguin['price'] = penguin['book_link'].map(lambda link: get_price(link))
     # Save the file as excel file:
     penguin['website_source'] = 'https://www.penguinrandomhouse.com/'
     penguin['scrape_date'] = str(datetime.today().date())
-    penguin.to_excel('penguin.xlsx', index=False)
+    #penguin.to_excel('penguin.xlsx', index=False)
+    print('penguin done successfully..')
+    return penguin
 
-if __name__ == '__main__':
-    start = 0
-    get_n = 100
-    main(start, get_n)
+
                 
         
    

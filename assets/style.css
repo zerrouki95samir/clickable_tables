@@ -14,6 +14,14 @@
     align-content: center;
 }
 
+.exportBtn{
+  margin: 100px 100px 0px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 .paginationBtns{
     margin: 60px 100px 30px 0;
     display: flex;
@@ -21,6 +29,12 @@
     align-items: center;
     justify-content: flex-end;
 }
+
+.datePicker {
+  flex-grow: 1; /* default 0 */
+
+}
+
 
 .firstItem {
     flex-grow: 1; /* default 0 */
@@ -39,11 +53,18 @@
 
 
 .resultContainer{
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .tableHeader{
     border: 1px solid darkblue;
+}
+
+.printBtn{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 80px 30px 0px 0;
 }
 
 
@@ -71,12 +92,20 @@ div {
 td {
   border: 1px solid #d9d9d9;
   padding: 0.5em;
+  font-size: 18px;
 }
+
+a{
+  color:rgb(0, 0, 0);
+  font-size: 110%;
+}
+
 th {
   background: #1565c0;
   color: white;
   padding: 0.5em;
   border: 1px solid #1565c0;
+  font-size: 20px;
 }
 .flex-row {
   width: 25%;
@@ -103,4 +132,11 @@ th {
   .flex-row {
     width: 100%;
  }
+}
+
+.checklist-selected-style
+  .custom-control-input:checked
+  ~ .custom-control-label::before {
+  background-color: #fa7268;
+  border-color: #ea6258;
 }

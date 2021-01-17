@@ -78,18 +78,18 @@ def get_price(data, country='PT'):
     return data
 
 
-if __name__ == '__main__':
+def go_elsevier(stop_at_page=4):
     # Specify what page number that you want to stop the scraper on it
     # You can set "None" to scrape all the pages
-    stop_in_page = 4
-    elsevier = scrape(stop_in_page)
+    #stop_in_page = 4
+    elsevier = scrape(stop_at_page)
     elsevier = get_price(elsevier)
     elsevier = elsevier.drop(['paperback'], axis=1)
     elsevier['website_source'] = 'https://www.elsevier.com/'
     elsevier['scrape_date'] = str(datetime.today().date())
+    print('elsevier done successfully..')
+    return elsevier
     
-    
-    elsevier.to_excel('elsevier.xlsx', index=False)
+   #elsevier.to_excel('elsevier.xlsx', index=False)
 
 
-    print('Process done successfully..')
