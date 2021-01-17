@@ -89,7 +89,7 @@ if __name__ == '__main__':
     
     # Drop duplicates and keep only the old/First ones.
     books = books.drop_duplicates(subset=['book_id'], keep='first')
-    
+    books = books.reset_index(drop=True)
     # Save the result on ../database folder
     books.to_csv(csv_path, index=False)
     

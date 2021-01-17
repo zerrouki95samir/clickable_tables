@@ -1,22 +1,16 @@
 import pandas as pd
-import plotly.express as px
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State, MATCH, ALL
+from dash.dependencies import Input, Output, State, ALL
 import dash_bootstrap_components as dbc
-import plotly.graph_objects as go
 import time
-import dash_dangerously_set_inner_html
 from datetime import datetime
 import dash_table
 from dash.exceptions import PreventUpdate
 from dash_extensions import Download
-
 from dash_extensions.snippets import send_data_frame
-import dateutil
-from flask import Flask, request
-import sqlite3
+from flask import Flask
 import json
 
 app = dash.Dash(
@@ -98,13 +92,6 @@ def filter_dates(selected_date, selected_authors, selected_websites):
     offset = 0
     filtered = df.copy()
     if selected_date:
-        # return df.to_dict('records')
-        #start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
-        #end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
-        # filtered = filtered.loc[
-        #     (pd.to_datetime(filtered['scrape_date']).dt.date >= start_date) &
-        #     (pd.to_datetime(filtered['scrape_date']).dt.date <= end_date)
-        # ]
         filtered = filtered.query('scrape_date in @selected_date')
 
     if selected_authors:
@@ -127,7 +114,6 @@ def filter_dates(selected_date, selected_authors, selected_websites):
 )
 def filter_pagination(n_clicks_next, n_clicks_prev, data, selected_books, pages_data, final_select):
     context = dash.callback_context.triggered[0]['prop_id'].split('.')[0]
-    context_value = dash.callback_context.triggered[0]['value']
     global offset
     if data is None:
         raise PreventUpdate
