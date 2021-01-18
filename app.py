@@ -234,7 +234,8 @@ def on_data_set_table(data, selected_books, books_len):
             dbc.Table.from_dataframe(page_data, striped=True, bordered=True, hover=True, responsive="sm")],
         )
 
-        return table_container2, data['nextPage'], previous_btn, f'Books {offset-PAGE_SIZE+1} - {offset-PAGE_SIZE+len(page_data)} ({len(books_len)})'
+        result_counter = html.B(f'Books {offset-PAGE_SIZE+1} - {offset-PAGE_SIZE+len(page_data)} ({len(books_len)})')
+        return table_container2, data['nextPage'], previous_btn, result_counter
     warning = dbc.Alert(
         "Sorry; No Books Available With The Specified Parameters!!", color="warning")
     return warning, data['nextPage'], previous_btn, ''
