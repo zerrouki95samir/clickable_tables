@@ -204,6 +204,7 @@ def on_data_set_table(data, selected_books, books_len):
         return check
 
     previous_btn = True
+    global PAGE_SIZE
     global offset
     if offset > PAGE_SIZE:
         previous_btn = False
@@ -292,4 +293,4 @@ def display_output(values, all_selected):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=False)
