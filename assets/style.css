@@ -38,7 +38,7 @@
 
 .firstItem {
     flex-grow: 1; /* default 0 */
-    margin-left:100px;
+    margin-left:30px;
     margin-right:7px;
   }
 
@@ -63,8 +63,9 @@
 .printBtn{
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  margin: 80px 30px 0px 0;
+  justify-content: space-between;
+  margin: 80px 0 0px 3px;
+  align-items: baseline;
 }
 
 
@@ -122,7 +123,7 @@ th {
   th {
     border-left: solid 1px #1565c0;
     border-right: solid 1px #1565c0;
-    border-bottom: solid 1px #1565c0;
+    border-bottom: solid 1px #1565c0; /* #1565c0 */
  }
   td {
     border-left: solid 1px #d9d9d9;
@@ -140,3 +141,4 @@ th {
   background-color: #fa7268;
   border-color: #ea6258;
 }
+
