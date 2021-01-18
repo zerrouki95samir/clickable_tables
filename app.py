@@ -22,7 +22,7 @@ server = app.server
 # read csv data:
 df = pd.read_csv('database/books.csv')
 
-PAGE_SIZE = 10
+PAGE_SIZE = 50
 offset = 0
 ORDER_BY = ['author', 'title']
 HOW = 'ASC'
