@@ -65,19 +65,20 @@ app.layout = html.Div([
 
         html.Div(id='empty'),
         html.Div([
-            html.Div(id='result-counter'), # Books 1 - 50 (xxxx)
-            dbc.Button("Print Selected Books", id='print-btn', outline=True, color="info", className="mr-1", disabled=False), 
+            html.Div(id='result-counter'),  # Books 1 - 50 (xxxx)
+            dbc.Button("Print Selected Books", id='print-btn', outline=True,
+                       color="info", className="mr-1", disabled=False),
             Download(id="download")
-            ], className='printBtn'),
+        ], className='printBtn'),
         dbc.Spinner(
             html.Div([
                 html.Div(id='dropdown-container-output'),
                 html.Div([html.Div(id='child1')]),
                 html.Div([
                     dbc.Button("Previous", outline=True, color="dark",
-                            id='previous-btn', className='spacer', disabled=True),
+                               id='previous-btn', className='spacer', disabled=True),
                     dbc.Button("Next", outline=True, color="dark",
-                            id='next-btn', disabled=True)
+                               id='next-btn', disabled=True)
                 ], className='paginationBtns')
             ], className='resultContainer')
         )
@@ -181,6 +182,7 @@ def on_data_set_table(data, selected_books, books_len):
     page_data = pd.DataFrame.from_dict(data['data'])
 
     selected_books = selected_books or {'selectedBooks': []}
+
     def get_thumbnail(l):
         return (html.Img(src=f'{l}', style={'height': '240px', 'width': '150px'}))
 
@@ -235,7 +237,8 @@ def on_data_set_table(data, selected_books, books_len):
             dbc.Table.from_dataframe(page_data, striped=True, bordered=True, hover=True, responsive="sm")],
         )
 
-        result_counter = html.B(f'Books {offset-PAGE_SIZE+1} - {offset-PAGE_SIZE+len(page_data)} ({len(books_len)})')
+        result_counter = html.B(
+            f'Books {offset-PAGE_SIZE+1} - {offset-PAGE_SIZE+len(page_data)} ({len(books_len)})')
         return table_container2, data['nextPage'], previous_btn, result_counter
     warning = dbc.Alert(
         "Sorry; No Books Available With The Specified Parameters!!", color="warning")
@@ -277,7 +280,8 @@ def display_output(values, all_selected):
     all_selected = all_selected or {'selectedBooks': []}
     if len(triggered_checkbox) == 1:
         try:
-            book_id = json.loads(triggered_checkbox[0].get('prop_id').replace('.value', ''))['index']
+            book_id = json.loads(triggered_checkbox[0].get(
+                'prop_id').replace('.value', ''))['index']
             value = triggered_checkbox[0].get('value')
             if (len(value) == 0) and (book_id in all_selected.get('selectedBooks')):
                 all_selected.get('selectedBooks').remove(book_id)
