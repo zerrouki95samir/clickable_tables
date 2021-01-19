@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from datetime import datetime
-
+import re
 
 def scrape(stop_in_page=None):
     options = webdriver.ChromeOptions()
@@ -36,6 +36,7 @@ def scrape(stop_in_page=None):
                 title = ''
                 price = ''
                 contributors = ''
+                pub_date= ''
                 a = book.find('a')
                 if a:
                     book_link = 'https://www.springer.com'+a.get('href')
@@ -53,6 +54,13 @@ def scrape(stop_in_page=None):
                     'p', {'class': ['meta', 'contributors', 'book-contributors']})
                 if contr_tag:
                     contributors = contr_tag.text.strip()
+                    if ('(' in contributors) and (')' in contributors):
+                        year = re.findall(r'\d+', contributors)
+                        for y in year:
+                            if len(y) == 4:
+                                pub_date = y
+                                break
+                        
 
                 df = df.append({
                     'title': title,
@@ -60,7 +68,8 @@ def scrape(stop_in_page=None):
                     'price': price,
                     'book_link': book_link,
                     'cover_link': cover_link,
-                    'website_source': 'https://www.springer.com/'
+                    'website_source': 'https://www.springer.com/', 
+                    'Publication date': pub_date
                 }, ignore_index=True)
         # else:
             #print(f'Status code {res.status_code} on {url}')

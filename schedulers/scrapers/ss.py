@@ -59,12 +59,32 @@ def scrape(stop_in_page=None):
         from_n+=20
     return df
 
+def get_pub_date(link):
+    print(link)
+    pub_date = ''
+    try:
+        res = requests.get('https://www.simonandschuster.com/books/Ladies-Get-Paid/Claire-Wasserman/9781982126902')
+        if res.status_code == 200:
+            soup = BeautifulSoup(res.content, 'html.parser')
+            ul = soup.find('ul', {'class': 'with-margin-bottom-small'})
+            if ul: 
+                for li in ul.find_all('li'):
+                    if 'Publisher' in li.text:
+                        if '(' in li.text and ')' in li.text:
+                            pub_date = li.text.split('(')[1].split(')')[0]
+        sleep(1)
+    except:
+        print('Something went wrong with ss dates')
+    
+    return pub_date
+
 
 def go_ss(stop_at_page=40):
     # Specify what page number that you want to stop
     # You can set "None" to scrape all the pages
     #stop_in_page = 40
     ss = scrape(stop_at_page)
+    ss['Publication date'] = ss['book_link'].map(lambda x:get_pub_date(x))
     ss['website_source'] = 'https://www.simonandschuster.com/'
     ss['scrape_date'] = str(datetime.today().date())
     print('SS done successfully..')

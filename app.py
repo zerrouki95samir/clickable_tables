@@ -219,7 +219,7 @@ def on_data_set_table(data, selected_books, books_len):
         page_data = page_data.drop(
             ['cover_link', 'book_link', 'website_source', 'title'], axis=1)
         page_data = page_data[['Selected Books', 'Title', 'author',
-                               'price', 'scrape_date', 'Book Cover', 'Publisher']]
+                               'price', 'scrape_date', 'Book Cover', 'Publisher', 'Publication date']]
 
         table_container = dash_table.DataTable(
             id='datatable-interactivity',

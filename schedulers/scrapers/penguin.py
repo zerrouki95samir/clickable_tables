@@ -47,6 +47,7 @@ def scrape(start, get_n):
 def get_price(book_link):
     print(f'{book_link}')
     price = ''
+    pub_date = ''
     res = requests.get(book_link)
     if res.status_code == 200:
         sleep(1.5)
@@ -54,12 +55,18 @@ def get_price(book_link):
         price_tag = soup.find('span', {'class': 'price'})
         if price_tag:
             price = price_tag.text.strip()
+        
+        pub_date_tag = soup.find('p', {'class': 'title-details'})
+        if pub_date_tag:
+            date_tag = pub_date_tag.find('span', {'class': 'ws-nw'})
+            if date_tag: 
+                pub_date = date_tag.text.strip()
     
-    return price
+    return price, pub_date
 
 def go_penguin():
     start = 0
-    get_n = 100
+    get_n = 150
     penguin = pd.DataFrame()
     while True: 
         print(f'Getting from {start} --- {get_n} ... ')
@@ -68,8 +75,8 @@ def go_penguin():
         if len(sub_df) < get_n:
             break
         start += get_n
-        
-    penguin['price'] = penguin['book_link'].map(lambda link: get_price(link))
+
+    penguin['price'], penguin['Publication date'] = zip(*penguin['book_link'].map(get_price))
     # Save the file as excel file:
     penguin['website_source'] = 'https://www.penguinrandomhouse.com/'
     penguin['scrape_date'] = str(datetime.today().date())

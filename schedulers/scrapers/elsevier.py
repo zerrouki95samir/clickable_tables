@@ -47,7 +47,8 @@ def scrape(stop_in_page=None):
                         'author': author,
                         'paperback': paperback,
                         'book_link': book_link,
-                        'cover_link': cover_link
+                        'cover_link': cover_link,
+                        'Publication date': ''
                     }, ignore_index=True)
         else:
             print(f'Status code {res.status_code} on {url}')
