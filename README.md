@@ -1,6 +1,6 @@
 # Books Aggregator
 
-This is a web application to scrape books from differents websites and display it in a web application to make it easy to select, filter and print (as xlsx file). 
+This is a simple interactive web based app (dash/plotly based). 
 
 ### Prerequisites
 
@@ -13,12 +13,12 @@ After installing Python, you can follow this steps:
 Clone this Repository on your machine, on your terminal/cmd.. :
 
 ```
-git clone https://github.com/zerrouki95samir/booksAggr.git
+git clone https://github.com/zerrouki95samir/clickable_tables.git
 ```
-cd to plotlyChartApi directory:
+cd to clickable_tables directory:
 
 ```
-cd booksAggr
+cd clickable_tables
 ```
 
 Install all the requirements packages:
@@ -38,21 +38,6 @@ If everything goes well, you will see this line at the end of your command line!
 ```
 Running on http://127.0.0.1:portNumber/ (Press CTRL+C to quit)
 ```
-
-### Update the data
-If you want to update the data; cd to schedulers/ folder:
-```
-cd schedulers
-```
-
-And run main.py file
-
-```
-python main.py
-```
-
-after the script finish the older csv file will overwrited with the new one (without any duplicates).
-
 
 
 
