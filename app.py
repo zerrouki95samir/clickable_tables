@@ -16,7 +16,7 @@ app = dash.Dash(
 )
 app.config['suppress_callback_exceptions'] = True
 
-PAGE_SIZE = 10
+PAGE_SIZE = 50
 offset = 0
 
 server = app.server
@@ -138,10 +138,10 @@ def update_page_table(sess_data, next_btn, previous_btn, prev_data):
             'next_disabled': True,
             'prev_disabled': True,
         }
-        if len(data[start_offset:stop_in+1]) > 10:
+        if len(data[start_offset:stop_in+1]) > PAGE_SIZE:
             return_page['next_disabled'] = False
 
-        if start_offset >= 10:
+        if start_offset >= PAGE_SIZE:
             return_page['prev_disabled'] = False
 
         return return_page
@@ -160,9 +160,9 @@ def update_page_table(sess_data, next_btn, previous_btn, prev_data):
             'next_disabled': True,
             'prev_disabled': True,
         }
-        if len(data[start_offset:stop_in+1]) > 10:
+        if len(data[start_offset:stop_in+1]) > PAGE_SIZE:
             return_page['next_disabled'] = False
-        if start_offset >= 10:
+        if start_offset >= PAGE_SIZE:
             return_page['prev_disabled'] = False
         return return_page
 
@@ -181,7 +181,7 @@ def update_page_table(sess_data, next_btn, previous_btn, prev_data):
             'next_disabled': True,
             'prev_disabled': True,
         }
-        if len(data[start_offset:stop_in+1]) > 10:
+        if len(data[start_offset:stop_in+1]) > PAGE_SIZE:
             return_page['next_disabled'] = False
         return return_page
 
