@@ -31,7 +31,8 @@ app.layout = html.Div([
     dcc.Store(id='pagination_data'),
     html.H1('Nawar29 From U.S.', className="text-center",
             style={'margin': '50px', 'color': 'black'}),
-    html.H5(id='title_detail', className="text-center", style={'margin': '100px 0 30px  0', 'color': 'black'}),
+    html.H5(id='title_detail', className="text-center",
+            style={'margin': '100px 0 30px  0', 'color': 'black'}),
     html.Div(id='page-content')
 ])
 
@@ -73,7 +74,7 @@ index_page = html.Div([
         dbc.Button("Show table", id='show_main_table', color="info", className="mr-1",
                    style={'float': "right", 'margin': '20px 0 20px 150px'}),
 
-    ], className='column', style={'maxWidth': '320px', 'width': '100%'}),
+    ], className='column', style={'maxWidth': '320px', 'width': '100%', 'display': 'none'}),
 
     dbc.Container(
         html.Div([
@@ -107,9 +108,9 @@ def show_main_table(data, sess_data):
             return main_table, html.B(f'Rows {data.get("start_offset", 0)+1} - {data.get("start_offset", 0) + data.get("page_size", 0)} ({data.get("total_size", 0)})'), data.get('prev_disabled', True), data.get('next_disabled', True)
         else:
             return '', '', True, True
-    
+
     else:
-            return '', '', True, True
+        return '', '', True, True
 
 
 @app.callback(
@@ -146,7 +147,7 @@ def update_page_table(sess_data, next_btn, previous_btn, prev_data):
 
         return return_page
 
-    if context == 'previous_btn' and prev_data.get('start_offset', 0) !=0:
+    if context == 'previous_btn' and prev_data.get('start_offset', 0) != 0:
         data = pd.DataFrame.from_dict(sess_data['main_data'])
         start_offset = prev_data.get('start_offset', 0) - PAGE_SIZE
         stop_in = start_offset + PAGE_SIZE
@@ -166,7 +167,6 @@ def update_page_table(sess_data, next_btn, previous_btn, prev_data):
             return_page['prev_disabled'] = False
         return return_page
 
- 
     if sess_data:
         print('sess_data')
         data = pd.DataFrame.from_dict(sess_data['main_data'])
@@ -186,44 +186,49 @@ def update_page_table(sess_data, next_btn, previous_btn, prev_data):
         return return_page
 
 
+# This Callback will triggred automatically (by default) each time the page opened/refresh
+# So we can hardcode the data here and use user browser to store the hardcoded data (dcc.store component)
+
 @app.callback(
     Output('session_storage', 'data'),
-    Output('warning_div', 'children'),
+    # Output('warning_div', 'children'),
     Input('show_main_table', 'n_clicks'),
-    State('main_sheet', 'value'),
-    State('detail_sheet', 'value'),
-    State('clickable_field', 'value'),
-    State('target_field', 'value'),
-    State('upload-file', 'contents'),
-    State('upload-file', 'filename'),
-    State('upload-file', 'last_modified'),
-    State('session_storage', 'data')
+    # State('main_sheet', 'value'),
+    # State('detail_sheet', 'value'),
+    # State('clickable_field', 'value'),
+    # State('target_field', 'value'),
+    # State('upload-file', 'contents'),
+    # State('upload-file', 'filename'),
+    # State('upload-file', 'last_modified'),
+    # State('session_storage', 'data')
 )
 def update_output(
     n_click,
-    main_sheet,
-    detail_sheet,
-    clickable_field,
-    target_field,
-    list_of_contents,
-    list_of_names,
-    list_of_dates,
-    histo_data
+    # main_sheet,
+    # detail_sheet,
+    # clickable_field,
+    # target_field,
+    # list_of_contents,
+    # list_of_names,
+    # list_of_dates,
+    # histo_data
 ):
-    if n_click:
-        if list_of_contents is not None:
-            data, is_error = helpers.parse_contents(
-                list_of_contents, list_of_names, list_of_dates, main_sheet, detail_sheet, clickable_field, target_field)
-            if data is not None and is_error:
-                data['clickable_field'] = clickable_field
-                data['target_field'] = target_field
-                data['main_sheet_name'] = main_sheet
-                data['detail_sheet_name'] = detail_sheet
-                return data, ['']
-            else:
-                return {}, [dbc.Alert(f"{data}", color="danger")]
-    else:
-        return histo_data, ['']
+    data = helpers.query_database(main_table='executive_summary',
+                                  detail_table='tests', clickable_field='name', target_field='name')
+    return data
+    # if n_click:
+    #     if list_of_contents is not None:
+    #         data, is_error = helpers.parse_contents(list_of_contents, list_of_names, list_of_dates, main_sheet, detail_sheet, clickable_field, target_field)
+    #         if data is not None and is_error:
+    #             data['clickable_field'] = clickable_field
+    #             data['target_field'] = target_field
+    #             data['main_sheet_name'] = main_sheet
+    #             data['detail_sheet_name'] = detail_sheet
+    #             return data, ['']
+    #         else:
+    #             return {}, [dbc.Alert(f"{data}", color="danger")]
+    # else:
+    #     return histo_data, ['']
 
 # Update the index
 
@@ -246,8 +251,10 @@ def display_page(pathname, data):
             filtered_data = helpers.filter_data(pathname, detail_data, target)
             if not filtered_data.empty:
                 # build the new table:
-                detail_table = helpers.build_detail_table(filtered_data, pathname)
-                title = html.Div(f'Detailed information on {pathname.replace("/", "").title()}')
+                detail_table = helpers.build_detail_table(
+                    filtered_data, pathname)
+                title = html.Div(
+                    f'Detailed information on {pathname.replace("/", "").title()}')
                 return detail_table, title
 
 

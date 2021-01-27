@@ -74,3 +74,22 @@ def parse_contents(contents, filename, date, main_sheet, detail_sheet, clickable
 
     else:
         return  None, False
+
+
+# For now this function read data from excels file... But you can adjust it to query data from your database.
+def query_database(main_table='executive_summary', detail_table='tests', clickable_field='name', target_field='name'):
+    filePath = 'database/example_data.xlsx'
+    main_table_data = pd.read_excel(filePath, sheet_name = main_table, engine='openpyxl',)
+    detail_table_data = pd.read_excel(filePath, sheet_name=detail_table, engine='openpyxl')
+
+    # this reshaping process is required: 
+    data = {
+        'main_data': main_table_data.to_dict('records'),
+        'detail_data': detail_table_data.to_dict('records'),
+        'clickable_field': clickable_field,
+        'target_field': target_field,
+        'main_sheet_name': main_table,
+        'detail_sheet_name': detail_table
+    }
+
+    return data

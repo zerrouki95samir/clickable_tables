@@ -39,6 +39,8 @@ If everything goes well, you will see this line at the end of your command line!
 Running on http://127.0.0.1:portNumber/ (Press CTRL+C to quit)
 ```
 
+**NB: If you want to connect this application with any external resources (eg. database), you can adjust the function helpers.query_database(...) - line 216 - and add your database credentials and your query and fetch ...**
+
 
 
 ## Author
